@@ -3,13 +3,14 @@ import { notFound } from "next/navigation";
 import PoemDisplay from "@/components/PoemDisplay";
 import { Metadata } from "next";
 
-// ✅ Use Next.js built-in type
 interface PageProps {
-  params: Record<string, string>;
+  params: {
+    slug: string;
+  };
 }
 
 export default async function PoemPage({ params }: PageProps) {
-  if (!params || !params.slug) return notFound();
+  if (!params?.slug) return notFound();
 
   const poem = await getPoemBySlug(params.slug);
   if (!poem) return notFound();
@@ -17,7 +18,6 @@ export default async function PoemPage({ params }: PageProps) {
   return <PoemDisplay title={poem.metadata.title} content={poem.content} />;
 }
 
-// ✅ Optional: Define Metadata for SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const poem = await getPoemBySlug(params.slug);
 
