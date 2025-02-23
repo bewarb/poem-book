@@ -3,16 +3,13 @@ import { notFound } from "next/navigation";
 import PoemDisplay from "@/components/PoemDisplay";
 import { Metadata } from "next";
 
-// ✅ Define types correctly
-type PageProps = {
-  params: {
-    slug: string;
-  };
-};
+// ✅ Use Next.js built-in type
+interface PageProps {
+  params: Record<string, string>;
+}
 
-// ✅ Fix Type Error by properly typing `params`
 export default async function PoemPage({ params }: PageProps) {
-  if (!params?.slug) return notFound();
+  if (!params || !params.slug) return notFound();
 
   const poem = await getPoemBySlug(params.slug);
   if (!poem) return notFound();
