@@ -1,16 +1,15 @@
 import Link from "next/link";
 import { getAllPoems } from "@/lib/poems";
-import ClientSideTypewriter from "@/components/ClientSideTypeWriter";
+import { TypeWriter } from "@/components/TypeWriter";
 
 export default async function Home() {
-  // Fetch poems on the server side
   const poems = await getAllPoems();
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
       {/* Title with Blinking Cursor */}
       <h1 className="text-4xl mb-2">
-        <ClientSideTypewriter text="Poem Book" />
+        <TypeWriter words={["Poem Book"]} loop={1} cursor cursorStyle="_" />
       </h1>
 
       {/* Subtitle */}
@@ -24,9 +23,11 @@ export default async function Home() {
             href={`/poem/${poem.slug}`}
             className="block text-lg cursor-pointer hover:underline"
           >
-            <ClientSideTypewriter 
-              text={poem.metadata.title} 
-              delay={500 * index} 
+            <TypeWriter 
+              words={[poem.metadata.title]} 
+              loop={1} 
+              delaySpeed={500 * index} 
+              cursor={false}
             />
           </Link>
         ))}
