@@ -1,30 +1,20 @@
 "use client";
 import Link from "next/link";
-import { getAllPoems } from "@/lib/poems";
 import { Typewriter } from "react-simple-typewriter";
-import { useEffect, useState } from "react";
 
-interface Poem {
-  slug: string;
-  metadata: {
-    title: string;
-    date: string;
-  };
+interface PoemListClientProps {
+  initialPoems: {
+    slug: string;
+    metadata: {
+      title: string;
+      date: string;
+    };
+  }[];
 }
 
-export default function Home() {
-  const [poems, setPoems] = useState<Poem[]>([]);
-
-  useEffect(() => {
-    async function fetchPoems() {
-      const fetchedPoems = await getAllPoems();
-      setPoems(fetchedPoems);
-    }
-    fetchPoems();
-  }, []);
-
+export default function PoemListClient({ initialPoems }: PoemListClientProps) {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
+    <>
       {/* Title with Blinking Cursor */}
       <h1 className="text-4xl mb-2">
         <Typewriter 
@@ -40,7 +30,7 @@ export default function Home() {
 
       {/* Poem Titles */}
       <div className="space-y-4">
-        {poems.map((poem, index) => (
+        {initialPoems.map((poem, index) => (
           <Link 
             key={poem.slug} 
             href={`/poem/${poem.slug}`}
@@ -55,6 +45,6 @@ export default function Home() {
           </Link>
         ))}
       </div>
-    </main>
+    </>
   );
 }
