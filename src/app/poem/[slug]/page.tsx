@@ -3,16 +3,16 @@ import { notFound } from "next/navigation";
 import PoemDisplay from "@/components/PoemDisplay";
 import type { Metadata } from "next";
 
-interface PageProps {
-  params: {
-    slug: string;
-  };
-}
+type Props = {
+  params: Promise<{ slug: string }>;
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
-export default async function PoemPage({ params }: PageProps) {
-  if (!params.slug) return notFound();
+export default async function PoemPage({ params }: Props) {
+  const { slug } = await params;
+  if (!slug) return notFound();
   
-  const poem = await getPoemBySlug(params.slug);
+  const poem = await getPoemBySlug(slug);
   if (!poem) return notFound();
   
   return (
@@ -23,8 +23,9 @@ export default async function PoemPage({ params }: PageProps) {
   );
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const poem = await getPoemBySlug(params.slug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const poem = await getPoemBySlug(slug);
   
   if (!poem) {
     return { 
