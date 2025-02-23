@@ -1,42 +1,33 @@
-"use client";
 import Link from "next/link";
 import { getAllPoems } from "@/lib/poems";
-import { Typewriter } from "react-simple-typewriter";
-import { useEffect, useState } from "react";
+import ClientSideTypewriter from "@/components/ClientSideTypeWriter";
 
-export default function Home() {
-  const [poems, setPoems] = useState<{ slug: string; metadata: { title: string; date: string } }[]>([]);
-
-  useEffect(() => {
-    async function fetchPoems() {
-      const fetchedPoems = await getAllPoems();
-      setPoems(fetchedPoems);
-    }
-    fetchPoems();
-  }, []);
+export default async function Home() {
+  // Fetch poems on the server side
+  const poems = await getAllPoems();
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
-      {/* ✅ "Poem Book" Title with Blinking Cursor */}
+      {/* Title with Blinking Cursor */}
       <h1 className="text-4xl mb-2">
-        <Typewriter words={["Poem Book"]} loop={1} cursor cursorStyle="_" />
+        <ClientSideTypewriter text="Poem Book" />
       </h1>
 
-      {/* ✅ "By Botobop" Subtitle */}
+      {/* Subtitle */}
       <h2 className="text-lg mb-6 opacity-80">By Botobop</h2>
 
-      {/* ✅ Poem Titles WITHOUT Blinking Cursor */}
+      {/* Poem Titles */}
       <div className="space-y-4">
         {poems.map((poem, index) => (
-          <Link key={poem.slug} href={`/poem/${poem.slug}`}>
-            <p className="text-lg cursor-pointer hover:underline">
-              <Typewriter
-                words={[poem.metadata.title]}
-                loop={1}
-                delaySpeed={500 * index}
-                cursor={false} // 🚀 Remove Blinking Cursor for Poem Titles
-              />
-            </p>
+          <Link 
+            key={poem.slug} 
+            href={`/poem/${poem.slug}`}
+            className="block text-lg cursor-pointer hover:underline"
+          >
+            <ClientSideTypewriter 
+              text={poem.metadata.title} 
+              delay={500 * index} 
+            />
           </Link>
         ))}
       </div>
