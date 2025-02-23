@@ -1,38 +1,35 @@
 "use client";
 import Link from "next/link";
 import { Typewriter } from "react-simple-typewriter";
+import { useEffect, useState } from "react";
 
-interface PoemListClientProps {
-  initialPoems: {
-    slug: string;
-    metadata: {
-      title: string;
-      date: string;
-    };
-  }[];
+interface Poem {
+  slug: string;
+  metadata: {
+    title: string;
+    date: string;
+  };
 }
 
-export default function PoemListClient({ initialPoems }: PoemListClientProps) {
+export default function PoemListClient({ poems }: { poems: Poem[] }) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
+
   return (
-    <>
-      {/* Title with Blinking Cursor */}
+    <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
       <h1 className="text-4xl mb-2">
-        <Typewriter 
-          words={["Poem Book"]} 
-          loop={1} 
-          cursor 
-          cursorStyle="_" 
-        />
+        <Typewriter words={["Poem Book"]} loop={1} cursor cursorStyle="_" />
       </h1>
-
-      {/* Subtitle */}
       <h2 className="text-lg mb-6 opacity-80">By Botobop</h2>
-
-      {/* Poem Titles */}
       <div className="space-y-4">
-        {initialPoems.map((poem, index) => (
-          <Link 
-            key={poem.slug} 
+        {poems.map((poem, index) => (
+          <Link
+            key={poem.slug}
             href={`/poem/${poem.slug}`}
             className="block text-lg cursor-pointer hover:underline"
           >
@@ -45,6 +42,6 @@ export default function PoemListClient({ initialPoems }: PoemListClientProps) {
           </Link>
         ))}
       </div>
-    </>
+    </main>
   );
 }

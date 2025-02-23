@@ -12,16 +12,21 @@ interface Poem {
   };
 }
 
-export default function Home() {
-  const [poems, setPoems] = useState<Poem[]>([]);
+// Server Component
+async function PoemList() {
+  const poems = await getAllPoems();
+  return <PoemListClient poems={poems} />;
+}
+
+// Client Component
+function PoemListClient({ poems }: { poems: Poem[] }) {
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    async function fetchPoems() {
-      const fetchedPoems = await getAllPoems();
-      setPoems(fetchedPoems);
-    }
-    fetchPoems();
+    setIsMounted(true);
   }, []);
+
+  if (!isMounted) return null;
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
@@ -57,4 +62,8 @@ export default function Home() {
       </div>
     </main>
   );
+}
+
+export default function Home() {
+  return <PoemList />;
 }
