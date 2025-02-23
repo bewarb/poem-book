@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 
 type Props = {
   params: Promise<{ slug: string }>;
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export default async function PoemPage({ params }: Props) {
