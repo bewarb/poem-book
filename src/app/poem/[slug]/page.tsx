@@ -3,21 +3,26 @@ import { notFound } from "next/navigation";
 import PoemDisplay from "@/components/PoemDisplay";
 import type { Metadata } from "next";
 
-export default async function PoemPage({ params }: { params: { slug: string } }) {
-  if (!params.slug) return notFound();
+interface PageProps {
+  params: { slug: string } | Promise<{ slug: string }>;
+}
 
-  const poem = await getPoemBySlug(params.slug);
+export default async function PoemPage({ params }: PageProps) {
+  const resolvedParams = await params;
+  if (!resolvedParams.slug) return notFound();
+
+  const poem = await getPoemBySlug(resolvedParams.slug);
   if (!poem) return notFound();
 
   return <PoemDisplay title={poem.metadata.title} content={poem.content} />;
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const poem = await getPoemBySlug(params.slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const resolvedParams = await params;
+  const poem = await getPoemBySlug(resolvedParams.slug);
   if (!poem) {
     return { title: "Poem Not Found" };
   }
-
   return {
     title: poem.metadata.title,
     description: `A poem titled "${poem.metadata.title}".`,
