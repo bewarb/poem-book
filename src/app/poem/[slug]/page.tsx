@@ -1,16 +1,10 @@
 import { getPoemBySlug } from "@/lib/poems";
 import { notFound } from "next/navigation";
 import PoemDisplay from "@/components/PoemDisplay";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
-interface PageProps {
-  params: {
-    slug: string;
-  };
-}
-
-export default async function PoemPage({ params }: PageProps) {
-  if (!params?.slug) return notFound();
+export default async function PoemPage({ params }: { params: { slug: string } }) {
+  if (!params.slug) return notFound();
 
   const poem = await getPoemBySlug(params.slug);
   if (!poem) return notFound();
@@ -18,9 +12,8 @@ export default async function PoemPage({ params }: PageProps) {
   return <PoemDisplay title={poem.metadata.title} content={poem.content} />;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const poem = await getPoemBySlug(params.slug);
-
   if (!poem) {
     return { title: "Poem Not Found" };
   }
