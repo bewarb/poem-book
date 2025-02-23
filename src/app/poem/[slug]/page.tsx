@@ -3,6 +3,10 @@ import { notFound } from "next/navigation";
 import PoemDisplay from "@/components/PoemDisplay";
 
 export default async function PoemPage({ params }: { params: { slug: string } }) {
+  if (!params || !params.slug) {
+    return notFound();
+  }
+
   const poem = await getPoemBySlug(params.slug);
 
   if (!poem) return notFound();
