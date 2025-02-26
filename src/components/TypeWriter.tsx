@@ -7,6 +7,7 @@ interface TypeWriterProps {
   cursor?: boolean;
   cursorStyle?: string;
   delaySpeed?: number;
+  typeSpeed?: number;
 }
 
 export function TypeWriter({ 
@@ -14,7 +15,8 @@ export function TypeWriter({
   loop = 1, 
   cursor = false,
   cursorStyle = "_",
-  delaySpeed = 0 
+  delaySpeed = 0,
+  typeSpeed = 50
 }: TypeWriterProps) {
   return (
     <Typewriter
@@ -23,6 +25,7 @@ export function TypeWriter({
       cursor={cursor}
       cursorStyle={cursorStyle}
       delaySpeed={delaySpeed}
+      typeSpeed={typeSpeed}
     />
   );
 }

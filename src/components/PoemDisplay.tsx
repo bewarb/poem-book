@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Typewriter } from "react-simple-typewriter";
+import { TypeWriter } from "./TypeWriter"; 
 
 export default function PoemDisplay({ title, content }: { title: string; content: string }) {
   const lines = content.split("\n").filter((line) => line.trim() !== "");
@@ -12,17 +12,17 @@ export default function PoemDisplay({ title, content }: { title: string; content
       const timer = setTimeout(() => setCurrentLineIndex(currentLineIndex + 1), delay);
       return () => clearTimeout(timer);
     }
-  }, [currentLineIndex, lines]); // ✅ Added 'lines' dependency to prevent ESLint error
+  }, [currentLineIndex, lines]);
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4">
       <h1 className="text-3xl mb-4">
-        <Typewriter words={[title]} loop={1} cursor cursorStyle="_" />
+        <TypeWriter words={[title]} loop={1} cursor cursorStyle="_" />
       </h1>
       <div className="text-lg max-w-2xl">
         {lines.slice(0, currentLineIndex + 1).map((line, index) => (
           <p key={index} className="mb-2">
-            <Typewriter words={[line]} loop={1} typeSpeed={50} delaySpeed={0} cursor={false} />
+            <TypeWriter words={[line]} loop={1} typeSpeed={50} cursor={false} />
           </p>
         ))}
       </div>

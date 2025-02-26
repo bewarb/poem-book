@@ -1,9 +1,8 @@
 "use client";
+import { TypeWriter } from "./TypeWriter";
 import Link from "next/link";
-import { Typewriter } from "react-simple-typewriter";
-import { useEffect, useState } from "react";
 
-interface Poem {
+export interface Poem {
   slug: string;
   metadata: {
     title: string;
@@ -11,21 +10,18 @@ interface Poem {
   };
 }
 
-export default function PoemListClient({ poems }: { poems: Poem[] }) {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return null;
-
+export default function PoemList({ poems }: { poems: Poem[] }) {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
+    <main className="flex flex-col items-center justify-center min-h-screen bg-black text-white text-center">
+      {/* Title with Typewriter Effect */}
       <h1 className="text-4xl mb-2">
-        <Typewriter words={["Poem Book"]} loop={1} cursor cursorStyle="_" />
+        <TypeWriter words={["Poem Book"]} loop={1} cursor cursorStyle="_" />
       </h1>
-      <h2 className="text-lg mb-6 opacity-80">By Botobop</h2>
+
+      {/* Subtitle */}
+      <h2 className="text-lg mb-6 opacity-80 text-center">By Botobop</h2>
+
+      {/* Poem List */}
       <div className="space-y-4">
         {poems.map((poem, index) => (
           <Link
@@ -33,7 +29,7 @@ export default function PoemListClient({ poems }: { poems: Poem[] }) {
             href={`/poem/${poem.slug}`}
             className="block text-lg cursor-pointer hover:underline"
           >
-            <Typewriter
+            <TypeWriter
               words={[poem.metadata.title]}
               loop={1}
               delaySpeed={500 * index}
