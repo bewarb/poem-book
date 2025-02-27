@@ -8,6 +8,7 @@ interface TypeWriterProps {
   cursorStyle?: string;
   delaySpeed?: number;
   typeSpeed?: number;
+  onComplete?: () => void; // ✅ Added onComplete function
 }
 
 export function TypeWriter({ 
@@ -16,7 +17,8 @@ export function TypeWriter({
   cursor = false,
   cursorStyle = "_",
   delaySpeed = 0,
-  typeSpeed = 50
+  typeSpeed = 50,
+  onComplete, // ✅ Added onComplete prop
 }: TypeWriterProps) {
   return (
     <Typewriter
@@ -26,6 +28,7 @@ export function TypeWriter({
       cursorStyle={cursorStyle}
       delaySpeed={delaySpeed}
       typeSpeed={typeSpeed}
+      onLoopDone={onComplete} // ✅ Calls onComplete when typing finishes
     />
   );
 }

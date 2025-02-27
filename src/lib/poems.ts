@@ -1,12 +1,10 @@
-"use server"; // ✅ This must be at the top of the file
-
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
 const poemsDirectory = path.join(process.cwd(), "content");
 
-export async function getAllPoems() {
+export function getAllPoems() {
   const fileNames = fs.readdirSync(poemsDirectory);
 
   return fileNames.map((fileName) => {
@@ -21,7 +19,7 @@ export async function getAllPoems() {
   });
 }
 
-export async function getPoemBySlug(slug: string) {
+export function getPoemBySlug(slug: string) {
   const fullPath = path.join(poemsDirectory, `${slug}.md`);
 
   if (!fs.existsSync(fullPath)) return null;
